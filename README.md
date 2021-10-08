@@ -49,7 +49,7 @@ PDF : https://github.com/in28minutes/SpringIn28Minutes/blob/master/InstallationG
 Repositorio GIT para la instalación : https://github.com/in28minutes/getting-started-in-5-steps
 
 
-##ENDPOINTS y Ejemplos
+#ENDPOINTS y Ejemplos
 
 ### GET /products HttpStatusCodes: 200, 404
 - http://localhost:8080/api/v1/products
