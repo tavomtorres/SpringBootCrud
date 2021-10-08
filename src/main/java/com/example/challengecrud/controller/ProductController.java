@@ -1,7 +1,7 @@
 package com.example.challengecrud.controller;
 
 import com.example.challengecrud.dto.ProductDTO;
-import com.example.challengecrud.exception.ApiRequestException;
+import com.example.challengecrud.dto.UpdateProductDTO;
 import com.example.challengecrud.model.Product;
 import com.example.challengecrud.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,15 +23,25 @@ public class ProductController {
         List<ProductDTO> list = productService.getAllProduct();
         return new ResponseEntity<List<ProductDTO>>(list,HttpStatus.OK);
     }
-    @GetMapping("/product/{id}")
+    @GetMapping("/products/{id}")
     ResponseEntity<ProductDTO> getProductById(@PathVariable long id){
         ProductDTO productDTO = productService.getProductById(id);
         return new ResponseEntity<ProductDTO>(productDTO,HttpStatus.OK);
     }
-    @PostMapping("/product")
+    @PostMapping("/products")
     ResponseEntity<ProductDTO> addProduct(@Validated @RequestBody ProductDTO newP){
         ProductDTO newProductDTO = productService.addNewProduct(newP);
         return new ResponseEntity<ProductDTO>(newProductDTO,HttpStatus.CREATED);
+    }
+    @PutMapping("/products/{SKU}")
+    ResponseEntity<ProductDTO> updateProduct(@Validated @RequestBody UpdateProductDTO updatedP, @PathVariable("SKU") String sku){
+        ProductDTO updatedProductDTO = productService.updateProduct(updatedP,sku);
+        return new ResponseEntity<ProductDTO>(updatedProductDTO,HttpStatus.OK);
+    }
+    @DeleteMapping("products/{SKU}")
+    public HttpStatus deleteProduct(@PathVariable("SKU") String sku){
+
+        return productService.deleteProduct(sku);
     }
 
 

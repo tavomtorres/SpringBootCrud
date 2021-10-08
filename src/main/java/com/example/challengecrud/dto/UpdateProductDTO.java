@@ -5,17 +5,15 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.validator.constraints.URL;
-import javax.validation.constraints.*;
+
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 import java.util.List;
 
 @Getter
 @Setter
 @Data
-public class ProductDTO  {
-
-    @NotEmpty(message = "SKU no puede estar vacio")
-    @JsonProperty("SKU")
-    private String sku;
+public class UpdateProductDTO {
 
     @Size(min = 3, max = 50,message = "Name minimo 3 y maximo 50 caracteres")
     @NotEmpty(message = "name no puede estar vacio")

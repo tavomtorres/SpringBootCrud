@@ -2,10 +2,10 @@ package com.example.challengecrud.model;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;
 import java.util.List;
-import java.util.Optional;
 
 @Entity
 @Table(name = "products")
@@ -13,7 +13,8 @@ import java.util.Optional;
 @Setter
 public class Product extends BaseEntity{
 
-    @Column(name = "SKU")
+    @NaturalId
+    @Column(name = "SKU", nullable = false, unique = true)
     private String sku;
 
     @Column(name = "Name")
@@ -31,7 +32,7 @@ public class Product extends BaseEntity{
     @Column(name = "Principal_Image")
     private String principalImage;
 
-    @OneToMany(mappedBy = "product")
+    @OneToMany(cascade = CascadeType.ALL,mappedBy = "product")
     private List<Image> secondImages;
 
 }

@@ -2,9 +2,11 @@ package com.example.challengecrud.service.impl;
 
 import com.example.challengecrud.dto.ImageDTO;
 import com.example.challengecrud.dto.ProductDTO;
+import com.example.challengecrud.dto.UpdateProductDTO;
 import com.example.challengecrud.exception.ApiAlreadyExistException;
 import com.example.challengecrud.exception.ApiNotFoundException;
 import com.example.challengecrud.exception.ApiRequestException;
+import com.example.challengecrud.mapper.ImageMapper;
 import com.example.challengecrud.mapper.ProductMapper;
 import com.example.challengecrud.model.Image;
 import com.example.challengecrud.model.Product;
@@ -12,12 +14,12 @@ import com.example.challengecrud.model.SkuValues;
 import com.example.challengecrud.repository.ImageRepository;
 import com.example.challengecrud.repository.ProductRepository;
 import com.example.challengecrud.service.ProductService;
-
-import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -26,13 +28,16 @@ public class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepository;
     private final ImageRepository imageRepository;
     private final ProductMapper productMapper;
+    private final ImageMapper imageMapper;
 
     public ProductServiceImpl(ProductRepository productRepository,
                               ProductMapper productMapper,
-                              ImageRepository imageRepository) {
+                              ImageRepository imageRepository,
+                              ImageMapper imageMapper) {
         this.productRepository = productRepository;
         this.productMapper = productMapper;
         this.imageRepository = imageRepository;
+        this.imageMapper = imageMapper;
     }
 
     @Override
@@ -56,11 +61,16 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public ProductDTO getProductBySku(String sku) {
+        return null;
+    }
+
+    @Override
     @Transactional
     public ProductDTO addNewProduct(ProductDTO newProductDTO) {
         //*Validar SKU
         skuValidation(newProductDTO.getSku());
-        Pricevalidation(newProductDTO.getPrice());
+        priceValidation(newProductDTO.getPrice());
 
         Product newProduct = productMapper.convertToEntity(newProductDTO);
         try {
@@ -74,6 +84,45 @@ public class ProductServiceImpl implements ProductService {
         return newProductDTO;
     }
 
+    @Override
+    @Transactional
+    public ProductDTO updateProduct(UpdateProductDTO updateProductDTO, String sku) {
+
+        skuValidation(sku);
+        Optional<Product> optionalProduct = productRepository.findBySku(sku);
+
+        if(optionalProduct.isPresent()){
+            Product oldProduct = optionalProduct.get();
+            oldProduct.setName(updateProductDTO.getName());
+            oldProduct.setBrand(updateProductDTO.getBrand());
+            oldProduct.setSize(updateProductDTO.getSize());
+            oldProduct.setPrice( Float.parseFloat(updateProductDTO.getPrice()));
+            oldProduct.setPrincipalImage(updateProductDTO.getPrincipalImage());
+            //oldProduct.setSecondImages(imageMapper.convertListDtoToEntity(updateProductDTO.getSecondImages(),oldProduct));
+            productRepository.save(oldProduct);
+
+            return productMapper.convertToDto(oldProduct);
+        }else{
+            throw new ApiRequestException("El SKU no existe");
+        }
+
+
+    }
+
+    @Override
+    public HttpStatus deleteProduct(String sku) {
+        skuValidation(sku);
+        Optional<Product> optionalProduct = productRepository.findBySku(sku);
+
+        if(optionalProduct.isPresent()){
+            productRepository.deleteById(optionalProduct.get().getId());
+            return HttpStatus.OK;
+        }else{
+            return HttpStatus.NOT_FOUND;
+        }
+    }
+
+
     //Guarda las imagenes secundarias del POST de producto
     private void saveImagesBySecondImages(List<ImageDTO> listImageDto, Product newProduct){
         if(!listImageDto.isEmpty()) {
@@ -85,8 +134,8 @@ public class ProductServiceImpl implements ProductService {
             }
         }
     }
-    private void Pricevalidation(String price){
-        Float number;
+    private void priceValidation(String price){
+        float number;
         try {
              number = Float.parseFloat(price);
         }catch (Exception e){
