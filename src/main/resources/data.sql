@@ -21,9 +21,9 @@ CREATE TABLE images (
 
 
 INSERT INTO products (SKU, NAME, BRAND,SIZE,PRICE,PRINCIPAL_IMAGE) VALUES
-('FAL-1000000', 'Producto 1', 'Ferrari','20 cm',20,'https://falabella.scene7.com/is/image/Falabella/principal1.png'),
-('FAL-2000000', 'Producto 2', 'Honda','10 m',300,'https://falabella.scene7.com/is/image/Falabella/principal2.jpg'),
-('FAL-3000000', 'Producto 3', 'Toyota','100 m',576.21,'https://falabella.scene7.com/is/image/Falabella/Principal3.jpg');
+('FAL-8406270', '500 Zapatilla Urbana Mujer', 'Ferrari','20 cm',20,'https://falabella.scene7.com/is/image/Falabella/principal1.png'),
+('FAL-88195228', 'Bicicleta  Aro 29', 'Honda','10 m',300,'https://falabella.scene7.com/is/image/Falabella/principal2.jpg'),
+('FAL-88189852', 'Camisa Manga Corta Hombre', 'Toyota','100 m',576.21,'https://falabella.scene7.com/is/image/Falabella/Principal3.jpg');
 
 INSERT INTO images (URL,FK_PRODUCT) VALUES
 ('https://falabella.scene7.com/is/image/Falabella/1',1),

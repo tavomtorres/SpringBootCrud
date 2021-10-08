@@ -140,3 +140,27 @@ NOT FOUND
 - password : sa
 
 
+# Drescipcion 
+Se usó una arquitectura orientada a Spring MVC , se separaron en capas de controlador,
+models, mappers, dto , servicios(interface) e implementaciones.
+
+Se uso como persistencia H2 database, usando un archivo data.sql 
+ubicado en src/main/resources
+
+Manejo de excepciones con @ExceptionHandler y excepciones customizadas.
+
+# LIMITACIONES.
+- No posee test unitarios
+- Errores de persistencia con los datos de la Foranea entre Productos e 
+ Imagenes(no guarda correctamente las imagenes secundarias de los productos, 
+- las duplica en la Bd) puede deberse al uso de las anotaciones @ManyToOne @OneToMany de Hibernate en las entidades.
+- No cuenta con archivo .yml o dockerFile para el cloud.
+- La validacion del price a 999999999.00 no es exacta (a mejorar).
+- No posee LOGGUEO , pero se puede implementar LoggerFactory de sprigboot para 
+  tener un TRACE de INFO, DEBUG, WARN y ERRORS.
+
+
+
+
+
+
