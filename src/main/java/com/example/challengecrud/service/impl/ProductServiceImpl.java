@@ -16,9 +16,12 @@ import com.example.challengecrud.repository.ProductRepository;
 import com.example.challengecrud.service.ProductService;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ReflectionUtils;
 
 import javax.transaction.Transactional;
+import java.lang.reflect.Field;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -119,6 +122,28 @@ public class ProductServiceImpl implements ProductService {
             return HttpStatus.OK;
         }else{
             return HttpStatus.NOT_FOUND;
+        }
+    }
+
+    @Override
+    public ProductDTO partialUpdate(String sku, Map<Object, Object> fields) {
+        skuValidation(sku);
+        Optional<Product> optionalProduct = productRepository.findBySku(sku);
+        if(optionalProduct.isPresent()){
+            Product productEntity = optionalProduct.get();
+            fields.forEach((k,v)->{
+                Field field = ReflectionUtils.findField(Product.class,(String) k);
+                field.setAccessible(true);
+                ReflectionUtils.setField(field,productEntity,v);
+            });
+            try {
+                productRepository.save(productEntity);
+                return productMapper.convertToDto(productEntity);
+            }catch(Exception e){
+                throw new ApiRequestException("Hubo un error al guardar el cambio, contacte al administrador");
+            }
+        }else{
+            throw new ApiNotFoundException("No se ha encontrado el SKU");
         }
     }
 

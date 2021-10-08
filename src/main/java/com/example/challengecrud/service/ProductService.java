@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 
 
 import java.util.List;
+import java.util.Map;
 
 public interface ProductService {
     List<ProductDTO> getAllProduct();
@@ -14,4 +15,5 @@ public interface ProductService {
     ProductDTO addNewProduct(ProductDTO newProductDTO);
     ProductDTO updateProduct(UpdateProductDTO updateProductDTO, String sku);
     HttpStatus deleteProduct(String sku);
+    ProductDTO partialUpdate(String sku, Map<Object,Object> fields);
 }

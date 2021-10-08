@@ -4,6 +4,7 @@ import com.example.challengecrud.dto.ProductDTO;
 import com.example.challengecrud.dto.UpdateProductDTO;
 import com.example.challengecrud.model.Product;
 import com.example.challengecrud.service.ProductService;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +12,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class ProductController {
@@ -38,9 +40,13 @@ public class ProductController {
         ProductDTO updatedProductDTO = productService.updateProduct(updatedP,sku);
         return new ResponseEntity<ProductDTO>(updatedProductDTO,HttpStatus.OK);
     }
+    @PatchMapping("/products/{SKU}")
+    ResponseEntity<ProductDTO> partialUpdateProduct(@PathVariable("SKU") String sku, @RequestBody Map<Object, Object> fields){
+        ProductDTO productDto  = productService.partialUpdate(sku,fields);
+        return new ResponseEntity<ProductDTO>(productDto,HttpStatus.OK);
+    }
     @DeleteMapping("products/{SKU}")
     public HttpStatus deleteProduct(@PathVariable("SKU") String sku){
-
         return productService.deleteProduct(sku);
     }
 
