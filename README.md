@@ -1,17 +1,17 @@
-#CRUD Challenge
-##Stack tecnologico:
+# CRUD Challenge
+## Stack tecnologico:
 - Java 11
 - Apache Maven 3.8.1
 - Springboot 2.5.5
 - H2 Database
 - Lombok
 
-#Diagrama de Clases UML
+# Diagrama de Clases UML
 ![alt text](docs/DiagramaUML.PNG)
 
 
 # GUIA INSTALACION
-##Herramientas requeridas
+## Herramientas requeridas
 - Java 11+
 - Intelijj, Eclipse o cualquier otro IDE
 - maven
@@ -49,7 +49,7 @@ PDF : https://github.com/in28minutes/SpringIn28Minutes/blob/master/InstallationG
 Repositorio GIT para la instalación : https://github.com/in28minutes/getting-started-in-5-steps
 
 
-#ENDPOINTS y Ejemplos
+# ENDPOINTS y Ejemplos
 
 ### GET /products HttpStatusCodes: 200, 404
 - http://localhost:8080/api/v1/products
@@ -133,7 +133,7 @@ Retorna el producto por numero de Id
 Retorna HTTP status 200 OK si se elimina con exito, si no se encuentra el SKU devuelve 404
 NOT FOUND
 
-#H2 Console
+# H2 Console
 - http://localhost:8080/h2
 - Use jdbc:h2:mem:testdb as JDBC URL
 - User : sa
