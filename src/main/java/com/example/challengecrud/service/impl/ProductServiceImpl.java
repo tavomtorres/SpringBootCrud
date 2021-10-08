@@ -65,7 +65,15 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductDTO getProductBySku(String sku) {
-        return null;
+        skuValidation(sku);
+        Optional<Product> p = productRepository.findBySku(sku);
+        if(p.isPresent()){
+            Product product = p.get();
+            return productMapper.convertToDto(product);
+        }else{
+            throw new ApiNotFoundException("SKU no encontrado");
+        }
+
     }
 
     @Override
@@ -79,6 +87,7 @@ public class ProductServiceImpl implements ProductService {
         try {
             saveImagesBySecondImages(newProductDTO.getSecondImages(),newProduct);
             this.productRepository.save(newProduct);
+            //agrega doble a la bd, bug, revisar.
         }catch (Exception e){
             //se debe ser mas especifico en la excepcion, ya que el price si lo pongo en letras, me sale este error
             throw new ApiAlreadyExistException("El SKU ya Existe");

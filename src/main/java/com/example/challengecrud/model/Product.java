@@ -32,7 +32,7 @@ public class Product extends BaseEntity{
     @Column(name = "Principal_Image")
     private String principalImage;
 
-    @OneToMany(cascade = CascadeType.ALL,mappedBy = "product")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "product")
     private List<Image> secondImages;
 
 }
